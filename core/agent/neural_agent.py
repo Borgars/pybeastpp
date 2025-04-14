@@ -1,4 +1,4 @@
-from core.agent import Agent
+from core.agent.agent import Agent
 
 class NeuralAgent(Agent):
     def __init__(self):

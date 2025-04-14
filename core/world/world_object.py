@@ -71,6 +71,9 @@ class WorldObject(Drawable):
     def update(self):
         pass
     
+    def on_collision(self, other) -> None:
+        pass
+
     def is_inside(self, vector: Vec2) -> bool:
         if self.circular:
             return np.linalg.norm(vector - self.location)**2 <= self.radius**2

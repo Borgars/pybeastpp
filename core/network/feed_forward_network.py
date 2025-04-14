@@ -24,7 +24,7 @@ class FeedForwardNetwork:
     ):
         self._inputs = inputs
         self._outputs = outputs
-        self._hiddden_nodes = hidden_nodes
+        self._hidden_nodes = hidden_nodes
         self._sigmoid = sigmoid
         self._bias = bias
         

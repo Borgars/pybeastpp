@@ -13,7 +13,6 @@ class Cheese(WorldObject):
     def __init__(self):
         super().__init__()
         self.radius = 5.0
-        # self.SetResetRandom(True)
         self.colour = ColourPalette[CT.YELLOW]
     
     def eaten(self):
@@ -28,8 +27,9 @@ class Mouse(Agent):
         
         self.add_sensor("angle", nearest_angle_sensor(Cheese, sensor_range))
         self._interaction_range = sensor_range
-        self._max_speed = 100.0
         self._min_speed = 25.0
+        self._max_speed = 100.0
+
         self.radius = 10
     
     def reset(self):

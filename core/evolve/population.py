@@ -1,8 +1,8 @@
 from copy import deepcopy
-from base import Group
-from evolver import Evolver
-from genetic_algorithm import GeneticAlgorithm
-from ..agent.agent import Agent
+from core.evolve.base import Group
+from core.evolve.evolver import Evolver
+from core.evolve.genetic_algorithm import GeneticAlgorithm
+from core.agent.agent import Agent
 
 class Population(Group):
     def __init__(

@@ -198,16 +198,16 @@ class Agent(WorldObject):
                     
                     self.location += normalise_vector(get_reciprocal(vec_to_other)) * (min_distance - np.linalg.norm(vec_to_other))
                     other.location += normalise_vector(vec_to_other) * (min_distance - np.linalg.norm(vec_to_other))
-                # self.on_collison(other)
-                # other.on_collision(self)
+                self.on_collision(other)
+                other.on_collision(self)
                 self.world.add_collision(self._collision_point)
             else:
                 self.sensor_interact(other)
                 if self.is_touching(other):
                     self.locaton += self._collision_normal * (self.radius - np.linalg.norm(self.location - self._collision_point))
-                # self.on_collision(other)
-                # other.on_collision(self)
-                self.world.add_collision(self._collision_point)
+                    self.on_collision(other)
+                    other.on_collision(self)
+                    self.world.add_collision(self._collision_point)
         super().interact(other) # WorldObject does not implement interact
     
     def is_touching(self, other: WorldObject) -> bool:
@@ -218,9 +218,6 @@ class Agent(WorldObject):
         self._collision_point, self._collision_normal = other.nearest_point(self.location)
         return other.circular or self.is_inside(self._collision_point)
     
-    # TODO: Implement collision code?
-    def on_collision(self, other: WorldObject) -> None:
-        pass
     
     def sensor_interact(self, other: WorldObject) -> None:
         for s in self.sensors.values():

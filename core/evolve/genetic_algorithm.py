@@ -3,11 +3,8 @@ import numpy as np
 
 from abc import ABC
 from copy import deepcopy
-from typing import TypeVar
-from evolver import Evolver
 from core.utils import GA_SELECTION_TYPE, GA_FITNESS_METHOD, GA_FITNESS_FIX, GA_PRINT_TYPE, GA_FLOAT_DEFAULT, GA_INT_DEFAULT
 from core.evolve.base import MutationOperator, NormalMutator, Genotype, EVO
-from core.evolve.population import Population
 
 class GeneticAlgorithm(ABC):
     def __init__(
@@ -22,7 +19,7 @@ class GeneticAlgorithm(ABC):
         print_style: list[int] = [GA_PRINT_TYPE.PARAMETERS],
         elitism: int = 0,
         culling: int = 0,
-        mutator: callable | MutationOperator = None
+        mutator = None
     ):
         assert culling % 2 == 0
         self.crossover = crossover
@@ -65,7 +62,7 @@ class GeneticAlgorithm(ABC):
         self._best_ever_genome = None
         self._best_current_genome = None
         
-        self.population: Population = None
+        self.population = None
     
     # TODO: Destructor?
     # TODO: __str__?

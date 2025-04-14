@@ -20,6 +20,9 @@ class UniformMutator(MutationOperator):
 class NormalMutator(MutationOperator):
     def __init__(self, mu: float = 0.0, sigma: float = 0.1):
         self.mu, self.sigma = mu, sigma
+    def __call__(self, t: float):
+        return t + np.random.normal(self.mu, self.sigma)
+
 
 class SimulationObject(ABC):
     def __init__(self):
