@@ -46,7 +46,7 @@ class Population(Group):
         return one
     
     def average_member_fitness(self) -> list[float]:
-        return [ m.average_fitness for m in self.members]
+        return [ m.average_fitness for m in self.members ]
     
     def begin_run(self) -> None:
         self.members.clear()

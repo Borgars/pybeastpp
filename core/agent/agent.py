@@ -228,7 +228,10 @@ class Agent(WorldObject):
             for s in self.sensors.values():
                 s.display()
         if self.world._display_params.config & self.world._display_type.DISPLAY_TRAILS != 0:
-            self.trail.display()
+            try:
+                self.trail.display()
+            except:
+                pass
         if self.world._display_params.config:
             super().display()
     

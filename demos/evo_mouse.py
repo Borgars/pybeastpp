@@ -1,5 +1,5 @@
 from core.world.world_object import WorldObject
-from core.agent.ffn_agent import FFNAgent
+from core.agent.ffn_agent import EvolvableFFNAgent
 from core.utils import ColourPalette, ColourType as CT
 from core.sensor.implementation import nearest_angle_sensor
 from core.simulation import Simulation
@@ -20,18 +20,16 @@ class Cheese(WorldObject):
     def eaten(self):
         self.location = self.world.random_location()
     
-class EvoMouse(FFNAgent):
+class EvoMouse(EvolvableFFNAgent):
     def __init__(self):
         super().__init__()
 
         self.last_cheese = 0
         self.cheese_found = 0
-        sensor_range = 250
+        sensor_range = 400
 
         self.add_sensor("angle", nearest_angle_sensor(Cheese, sensor_range))
         self._interaction_range = sensor_range
-        self._min_speed = 25
-        self._max_speed = 100
         self.radius = 10
         self.add_brain(10)
     
@@ -48,15 +46,25 @@ class EvoMouse(FFNAgent):
     def get_fitness(self):
         return self.cheese_found
     
+    def reset(self):
+        self.cheese_found = 0
+        super().reset()
+    
 class EvoMouseSimulation(Simulation):
     def __init__(self):
         super().__init__("EvoMouse")
+
+        self.generations = 100
+        self.assessments = 1
+        self.timesteps = 500
+
         self.population_size = 30
         self.algortihm = GeneticAlgorithm(0.25, 0.1, selection=GA_SELECTION_TYPE.ROULETTE)
         self.add("mice", Population(self.population_size, EvoMouse, self.algortihm))
         self.add("cheese", Group(self.population_size, Cheese))
     
     def log_end_generation(self):
-        average = self.contents["mice"].average_member_fitness()
+        averages = self.contents["mice"].average_member_fitness()
+        average = sum(averages) / len(averages)
         self.log.info(f"Average Fitness: {average:.3f}")
     

@@ -1,8 +1,7 @@
 from OpenGL.GL import *
-from core.world.drawable import Drawable
 from core.utils import Vec2
 
-class Trail(Drawable):
+class Trail():
     def __init__(
         self,
         visible: bool = True,

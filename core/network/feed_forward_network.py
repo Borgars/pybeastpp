@@ -56,9 +56,9 @@ class FeedForwardNetwork:
         
         self.input_values = np.zeros(self._inputs, dtype=np.float32)
         self.output_values = np.zeros(self._outputs, dtype=np.float32)
-        self._input_to_hidden: int = 0
-        self._hidden_to_output: int = 0
-        self.number_weights: int = 0
+        self._input_to_hidden: int = (self._inputs + (1 if self._bias else 0)) * self._hiddden_nodes
+        self._hidden_to_output: int = (self._hidden_nodes + (1 if self._bias else 0)) * self._outputs
+        self.number_weights: int = self._input_to_hidden + self._hidden_to_output
         
         self._hidden_layer: list[Neuron] = []
         self._output_layer: list[Neuron] = []
@@ -107,5 +107,21 @@ class FeedForwardNetwork:
     def set_activation_function(self, function: callable):
         setattr(self, "activation_function", function)
     
+    def set_configuration(self, config: dict):
+        assert len(config["hidden"]) == self._hiddden_nodes, "Inconsistent number of hidden neurons"
+        assert len(config["output"]) == self._outputs, "Inconsistent number of output neurons"
+        for neuron, weights in zip(self._hidden_layer, config["hidden"]):
+            assert len(weights) == len(neuron.weights), "Number of hidden neuron weights does not equal number of inputs"
+            neuron.weights[:] = weights
+        for neuron, weights in zip(self._output_layer, config["output"]):
+            assert len(weights) == len(neuron.weights), "Number of output neuron weights does not equal number of hidden neurons"
+            neuron.weights[:] = weights
+    
+    def get_configuration(self) -> dict:
+        return {
+            "hidden": [ neuron.weights for neuron in self._hidden_layer ],
+            "output": [ neuron.weights for neuron in self._output_layer ]
+        }
+
     # TODO: Set/Get Configuration?
     # TODO: Serialise/deserialise?

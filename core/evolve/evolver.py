@@ -12,7 +12,7 @@ class Evolver(ABC):
         self._fixed_fitness: float = 0.0
         
         # PSOAlgorithm attributes
-        self._best_solution = list[Genotype] = []
+        self._best_solution: list[Genotype] = []
         self._best_fitness: float = 0.0
     
     @property
