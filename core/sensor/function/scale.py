@@ -25,7 +25,7 @@ class ScaleLinear(ScaleFunction):
         self.output_min, self.output_max = output_min, output_max
     
     def __call__(self, value: float) -> float:
-        return (value - self.input_min) / (self.input_max - self.input_min) * (self.output_max - self.output_min)
+        return (value - self.input_min) / (self.input_max - self.input_min) * (self.output_max - self.output_min) + self.output_min
 
 class ScaleAbsolute(ScaleFunction):
     def __call__(self, value: float) -> float:

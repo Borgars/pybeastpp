@@ -190,14 +190,20 @@ class Agent(WorldObject):
             
             if self.is_touching(other):
                 if self.solid and other.solid:
-                    average_velocity = (self.velocity + other.velocity) * 0.5
+                    if hasattr(other, "velocity"):
+                        ov = other.velocity
+                    else:
+                        ov = 0.0
+                    average_velocity = (self.velocity + ov) * 0.5
                     vec_to_other = other.location - self.location
                     min_distance = self.radius + other.radius
                     self.velocity = average_velocity
-                    other.velocity = average_velocity
+                    if hasattr(other, "velocity"):
+                        other.velocity = average_velocity
                     
                     self.location += normalise_vector(get_reciprocal(vec_to_other)) * (min_distance - np.linalg.norm(vec_to_other))
-                    other.location += normalise_vector(vec_to_other) * (min_distance - np.linalg.norm(vec_to_other))
+                    if hasattr(other, "velocity"):
+                        other.location += normalise_vector(vec_to_other) * (min_distance - np.linalg.norm(vec_to_other))
                 self.on_collision(other)
                 other.on_collision(self)
                 self.world.add_collision(self._collision_point)

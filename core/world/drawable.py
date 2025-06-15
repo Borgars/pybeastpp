@@ -65,7 +65,6 @@ class Drawable(ABC):
     def display(self) -> None:
         if not self.visible or self.location is None:
             return
-        
         glPushMatrix()
         glTranslated(self.location[0], self.location[1], 0.0)
         glRotated(np.degrees(self.orientation), 0.0, 0.0, 1.0)

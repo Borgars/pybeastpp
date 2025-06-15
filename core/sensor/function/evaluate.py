@@ -3,7 +3,7 @@ import numpy as np
 from core.sensor.base import EvaluateFunction
 from core.sensor.beam_sensor import BeamSensor
 from core.world.world_object import WorldObject
-from core.utils import Vec2, get_vector_angle
+from core.utils import Vec2, get_vector_angle, WORLD_DISPLAY_PARAMETERS
 
 class EvaluateNearest(EvaluateFunction):
     def __init__(
@@ -22,6 +22,7 @@ class EvaluateNearest(EvaluateFunction):
     
     def reset(self) -> None:
         self.best_candidate = None
+        self.best_candidate_vector = None
         self.nearest_so_far = self.range
     
     def __call__(self, obj: WorldObject, loc: Vec2):
@@ -82,21 +83,50 @@ class EvaluateNearestDistanceX(EvaluateNearest):
     Returns vertical distance to nearest target
     """
     def evaluate(self) -> float:
-        return self.best_candidate_vector[0] - self.owner.location[0]
-
+        if self.best_candidate_vector is None:
+            return 0.0
+        
+        delta = self.best_candidate_vector[0] - self.owner.location[0]
+        if abs(delta) > (WORLD_DISPLAY_PARAMETERS.width / 2):
+            score = abs(WORLD_DISPLAY_PARAMETERS.width - abs(delta))
+        else:
+            score = abs(delta)
+        
+        if score > self.range:
+            self.reset()
+            return 0.0
+        else:
+            return score
+        
 class EvaluateNearestDistanceY(EvaluateNearest):
     """
     Returns horizontal distance to nearest target
     """
     def evaluate(self) -> float:
-        return self.best_candidate_vector[1] - self.owner.location[1]
+        if self.best_candidate_vector is None:
+            return 0.0
+        
+        delta = self.best_candidate_vector[1] - self.owner.location[1]
+        if abs(delta) > (WORLD_DISPLAY_PARAMETERS.height / 2):
+            score = abs(WORLD_DISPLAY_PARAMETERS.height - abs(delta))
+        else:
+            score = abs(delta)
+        
+        if score > self.range:
+            self.reset()
+        else:
+            return score
 
 class EvaluateNearestPositionX(EvaluateNearest):
     def evaluate(self) -> float:
+        if self.best_candidate_vector is None:
+            return 0.0
         return self.best_candidate_vector[0]
 
 class EvaluateNearestPositionY(EvaluateNearest):
     def evaluate(self) -> float:
+        if self.best_candidate_vector is None:
+            return 0.0
         return self.best_candidate_vector[1]
 
 class EvaluateNearestAngle(EvaluateNearest):
