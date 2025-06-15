@@ -1,3 +1,3 @@
 # PyBEAST++
 
-A description will go here in the future.
+PyBEAST++ is a refactoring of the PyBEAST courseware from the University of Leeds. It involves bug fixes, vector standardisation to NumPy, framerate increases, removal of broken/incomplete code, following to pythonic coding standards, and an easier setup. Provided is a bash script which utilises Apptainer (Singularity), that will create the image on the first run, and run the image (re-binding the drive such that all changes are saved) without recreating on further runs.

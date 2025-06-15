@@ -147,9 +147,8 @@ class Frame(wx.Frame):
     def on_about(self, event):
         wx.MessageBox("""Bioinspired Evolutionary Agent Simulation Toolkit\n
                       PyBEAST++ Version: 1.0.0\n
-                      Authored by James Borgars\n
-                      BEAST originally authored by Tom Carden & David Gordon\n
-                      PyBEAST authored by Netta Cohen, Martin Callaghan, John Hodrien
+                      PyBEAST developed by University of Leeds
+                      PyBEAST++ created by James Borgars from PyBEAST
                       """, "PyBEAST++", wx.ICON_INFORMATION)
     
     def on_reset(self, event) -> None:
